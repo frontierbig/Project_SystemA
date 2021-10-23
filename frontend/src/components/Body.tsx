@@ -135,7 +135,7 @@ export default function Body() {
 
 
 
-    const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const handleClose = (event?: SyntheticEvent, reason?: string) => {
     if (reason === "clickaway") {
@@ -198,6 +198,21 @@ export default function Body() {
 
 
         <Container className={classes.container} maxWidth="md">
+
+<Snackbar open={success} autoHideDuration={5000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success">
+              บันทึกข้อมูลสำเร็จ
+              
+            </Alert>
+          </Snackbar>
+          <Snackbar open={error} autoHideDuration={5000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="error">
+              บันทึกข้อมูลไม่สำเร็จ
+            </Alert>
+          </Snackbar>
+
+
+
             <Paper className={classes.paper}>
                 <Box display="flex">
                     <Box flexGrow={1}>
@@ -300,8 +315,8 @@ export default function Body() {
                             variant="contained"
                             color="primary"
                             onClick={submitDrugAllergy}
-                            component={RouterLink} 
-                            to="/"
+                            // component={RouterLink} 
+                            // to="/link/History"
                             >
                             SUBMIT
                         </Button>

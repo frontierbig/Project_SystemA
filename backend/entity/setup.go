@@ -46,7 +46,7 @@ func SetupDatabase() {
 	Stock           : 10 ,
 	}
 	db.Model(&Drug{}).Create(&Drug1)
-	/*EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE*/
+	
 
   
 

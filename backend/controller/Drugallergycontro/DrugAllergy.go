@@ -58,7 +58,7 @@ func CreateDrugAllergy(c *gin.Context) {
 
 func ListDrugAllergy(c *gin.Context) {
 	var DrugAllergy []entity.DrugAllergy
-	if err := entity.DB().Preload("Nurse").Preload("MedicalRecord").Preload("Drug").Preload("DrugAllergy").Table("drug_allergies").Find(&DrugAllergy).Error; err != nil {
+	if err := entity.DB().Preload("Nurse").Preload("MedicalRecord").Preload("Drug").Table("drug_allergies").Find(&DrugAllergy).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

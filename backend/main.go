@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/frontierbig/sa-64-example/controller"
+	"github.com/frontierbig/sa-64-example/controller/Drugallergycontro"
 
 	"github.com/frontierbig/sa-64-example/entity"
 
