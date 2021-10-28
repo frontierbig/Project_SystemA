@@ -1,9 +1,10 @@
 package entity
 
 import (
-	"gorm.io/gorm"
 
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
 var db *gorm.DB
@@ -22,6 +23,13 @@ func SetupDatabase() {
 	database.AutoMigrate(&Nurse{}, &MedicalRecord{},&Drug{},& DrugAllergy{})
 
 	db = database
+
+
+	Pass1, err := bcrypt.GenerateFromPassword([]byte("1"), 14)
+	Pass2, err := bcrypt.GenerateFromPassword([]byte("123"), 14)
+
+
+	
   
   MedicalRecord1 := MedicalRecord{
 	Hospital_number :"001" ,
@@ -33,11 +41,19 @@ func SetupDatabase() {
 	db.Model(&MedicalRecord{}).Create(&MedicalRecord1)
 
   Nurse1 := Nurse{
-    NurseName:  "Nurse001" ,
-	  NurseEmail: "big16635@gmail.com" ,
-	  NursePass:  "123zaza" ,
+      Name:  "Nurse001" ,
+	  Email: "big16635@gmail.com" ,
+	  Pass :  string (Pass1) ,
 	}
 	db.Model(&Nurse{}).Create(&Nurse1)
+
+
+	Nurse2 := Nurse{
+		Name:  "Nurse002" ,
+		Email: "big@gmail.com" ,
+		Pass :  string (Pass2) ,
+		}
+		db.Model(&Nurse{}).Create(&Nurse2)
 
   Drug1 := Drug{
 	Drug_Name       : "Ruds1",

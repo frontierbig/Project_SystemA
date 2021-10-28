@@ -21,19 +21,19 @@ func CreateDrugAllergy(c *gin.Context) {
 
 	// 10: ค้นหา Nurse ด้วย id
 	if tx := entity.DB().Where("id = ?", DrugAllergy.NurseID).First(&Nurse); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "video not found"})
+	 	c.JSON(http.StatusBadRequest, gin.H{"error": "Nurse not found"})
 		return
 	}
 
 	// 11: ค้นหา MedicalRecord ด้วย id
 	if tx := entity.DB().Where("id = ?", DrugAllergy.MedicalRecordID).First(&MedicalRecord); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "resolution not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "MedicalRecord not found"})
 		return
 	}
 
 	// 12: ค้นหา Drug ด้วย id
 	if tx := entity.DB().Where("id = ?", DrugAllergy.DrugID).First(&Drug); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "playlist not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Drug not found"})
 		return
 	}
 

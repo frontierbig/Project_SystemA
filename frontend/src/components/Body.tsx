@@ -1,7 +1,6 @@
 import React, { ChangeEvent,
   useEffect,
   useState, 
-  Fragment, 
   SyntheticEvent } from 'react';
 import { Link as RouterLink } from "react-router-dom";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
@@ -11,7 +10,6 @@ import { Box, Paper } from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
 import { Select } from "@material-ui/core";
 import { MenuItem } from "@material-ui/core";
@@ -46,9 +44,6 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-function createData(name: string, amount: number) {
-    return { name, amount };
-}
 
 export default function Body() {
     const classes = useStyles();
@@ -71,7 +66,8 @@ export default function Body() {
       const apiUrl = "http://localhost:8080/api/MedicalRecord";
       const requestOptions = {
         method: "GET",
-        headers: {"Content-Type": "application/json"},
+        headers: {Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",},
       }
   
       fetch(apiUrl, requestOptions)
@@ -89,12 +85,14 @@ export default function Body() {
 
 
 
-  const [Nurse, setNurse] = useState<NurseInterface[]>([]);
+  const [Nurse, setNurse] = useState<NurseInterface>();
   const getNurse = async() => {
-      const apiUrl = "http://localhost:8080/api/Nurse";
-      const requestOptions = {
+    const uid = Number(localStorage.getItem("uid"));
+    const apiUrl = `http://localhost:8080/api/Nurse/${uid}`;
+    const requestOptions = {
         method: "GET",
-        headers: {"Content-Type": "application/json"},
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type": "application/json",},
       }
   
       fetch(apiUrl, requestOptions)
@@ -118,7 +116,8 @@ export default function Body() {
       const apiUrl = "http://localhost:8080/api/Drug";
       const requestOptions = {
         method: "GET",
-        headers: {"Content-Type": "application/json"},
+        headers: {Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",},
       }
   
       fetch(apiUrl, requestOptions)
@@ -141,15 +140,15 @@ export default function Body() {
     if (reason === "clickaway") {
       return;
     }
+
     setSuccess(false);
     setError(false);
-  };
-
+  };  
 
 
   const submitDrugAllergy = () => {
     let data = {
-	    NurseID: DrugAllergy.NurseID,
+	    NurseID: Nurse?.ID,
       MedicalRecordID:   DrugAllergy.MedicalRecordID,
       DrugID:  DrugAllergy.DrugID,
       DrugAllergy: DrugAllergy.DrugAllergy,
@@ -160,11 +159,12 @@ export default function Body() {
     const apiUrl = "http://localhost:8080/api/submit";
     const requestOptionsPost = {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type": "application/json",},
       body: JSON.stringify(data),
     };
 
-       fetch(apiUrl, requestOptionsPost)
+     fetch(apiUrl, requestOptionsPost)
       .then((response) => response.json())
       .then((res) => {
         if (res.data) {
@@ -176,13 +176,6 @@ export default function Body() {
   }
 
 
-
-
-
-
-
-
-
     const handleChange = (event: ChangeEvent<{name?: string; value: unknown}>) => {
       const name = event.target.name as keyof typeof DrugAllergy;
       setDrugAllergy({...DrugAllergy, [name]: event.target.value,});
@@ -190,16 +183,11 @@ export default function Body() {
 
 
 
-
-
-
-
     return (
 
 
-        <Container className={classes.container} maxWidth="md">
-
-<Snackbar open={success} autoHideDuration={5000} onClose={handleClose}>
+<Container className={classes.container} maxWidth="md">
+    <Snackbar open={success} autoHideDuration={5000} onClose={handleClose} TransitionProps={{onExit: () => {window.location.href="/";}}}>
             <Alert onClose={handleClose} severity="success">
               บันทึกข้อมูลสำเร็จ
               
@@ -210,8 +198,6 @@ export default function Body() {
               บันทึกข้อมูลไม่สำเร็จ
             </Alert>
           </Snackbar>
-
-
 
             <Paper className={classes.paper}>
                 <Box display="flex">
@@ -247,17 +233,18 @@ export default function Body() {
                     </Grid>           
 
 
+
                     <Grid item xs={6}>
                         <p>พยาบาลที่ทำการบันทึก</p>
                         <Select variant="outlined"
-                            value={DrugAllergy.NurseID}
-                            inputProps={{name: "NurseID"}}
-                            onChange={handleChange}
-                            style={{ width: 400 }}
-                        >
-                            <MenuItem value={0} key={0}>เลือกชื่อพยาบาล</MenuItem>
-                            {Nurse.map((item: NurseInterface) => (
-                              <MenuItem value={item.ID} key={item.ID}>{item.NurseName}</MenuItem>))}
+                           disabled
+                           defaultValue={0}
+                           value={Nurse?.ID}
+                           style={{width:400}}
+
+                           >
+                             <MenuItem value={0}>{Nurse?.Name}</MenuItem>
+
                         </Select>
                     </Grid>      
 
@@ -308,15 +295,27 @@ export default function Body() {
                         className ={classes.fullbox}
                          multiline rows={4}/>
                           
+
                     </Grid>
+
+
+
+
+                    <Grid item xs={6}>
+                        <Button 
+                                variant="contained" 
+                                color="primary" 
+                                component={RouterLink}
+                                to="/"
+                                >BACK</Button>
+                    </Grid>
+
 
                     <Grid item xs={12}>
                         <Button style={{ float: "right" }}
                             variant="contained"
                             color="primary"
                             onClick={submitDrugAllergy}
-                            // component={RouterLink} 
-                            // to="/link/History"
                             >
                             SUBMIT
                         </Button>

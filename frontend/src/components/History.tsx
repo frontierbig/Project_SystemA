@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -11,12 +11,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import moment from 'moment';
 import Container from '@material-ui/core/Container';
-import IconButton from '@material-ui/core/IconButton';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import Collapse from '@material-ui/core/Collapse';
 import { format } from 'date-fns'
 import { DrugAllergyInterface } from "../models/IUser";
 
@@ -32,6 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+
 export default function History() {
     const classes = useStyles();
     const [DrugAllergy, setDrugAllergy] = useState<DrugAllergyInterface[]>([]);
@@ -40,7 +36,8 @@ export default function History() {
       const apiUrl = "http://localhost:8080/api/DrugAllergy";
       const requestOptions = {
         method: "GET",
-        headers: {"Content-Type": "application/json"},
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type": "application/json",},
       };
   
       fetch(apiUrl, requestOptions)
@@ -80,6 +77,7 @@ export default function History() {
               to="/link/body"
               variant="contained"
               color="primary"
+
             >
               สร้างข้อมูล
             </Button>
@@ -115,7 +113,7 @@ export default function History() {
                 <TableRow key={item.ID}>
                   <TableCell align="center">{item.ID}</TableCell>
                   <TableCell align="center">{item.MedicalRecord.Patient_Name}</TableCell>
-                  <TableCell align="center">{item.Nurse.NurseName}</TableCell>
+                  <TableCell align="center">{item.Nurse.Name}</TableCell>
                   <TableCell align="center">{item.Drug.Drug_Name}</TableCell>
                   <TableCell align="center">{item.DrugAllergy}</TableCell>
                   <TableCell align="center">{format((new Date(item.AddedTime)), 'dd MMMM yyyy hh:mm a')}</TableCell>

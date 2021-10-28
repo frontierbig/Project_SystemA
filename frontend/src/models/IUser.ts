@@ -19,12 +19,19 @@ export interface DrugAllergyInterface {
 	Nurse:   NurseInterface,
 	AddedTime : Date,
 }
+
+
+
 export interface NurseInterface {
     ID: number,
-    NurseName:  string ,
-	NurseEmail: string ,
-	NursePass:  string ,
+    Name:  string ,
+	Email: string ,
+	Pass:  string ,
 }
+
+
+
+
 export interface DrugInterface {
     ID: number,
     Drug_Name      : string ,

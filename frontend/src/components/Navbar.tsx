@@ -33,6 +33,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function ButtonAppBar() {
   const classes = useStyles();
+  const SignOut = () => {
+    localStorage.clear();
+    window.location.href = "/";
+  }
 
   return (
     <div className={classes.root} >
@@ -41,7 +45,7 @@ export default function ButtonAppBar() {
           <Typography variant="h6"  className={classes.title}>
              Drug allergy
           </Typography>
-          <Button color="inherit" className={classes.small} >Logout</Button>
+          <Button color="inherit" onClick={SignOut}  className={classes.small} >Logout</Button>
           
         </Toolbar>
             

@@ -5,6 +5,8 @@ import (
 
 	"github.com/frontierbig/sa-64-example/entity"
 
+	"github.com/frontierbig/sa-64-example/middlewares"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,15 +16,23 @@ func main() {
 
 	r := gin.Default()
 	r.Use(CORSMiddleware())
+	api := r.Group("") 
+	{
+		protected := api.Use(middlewares.Authorizes())
+		{
+			// User Routes
+			
+			protected.GET("/api/MedicalRecord", controller.ListMedicalRecord)
 
-	// User Routes
-	
-	r.GET("/api/MedicalRecord", controller.ListMedicalRecord)
-	r.GET("/api/Nurse", controller.ListNurse)
-	r.GET("/api/Drug", controller.ListDrug)
-	r.GET("/api/DrugAllergy", controller.ListDrugAllergy)
-	r.POST("/api/submit", controller.CreateDrugAllergy)
-	
+			protected.GET("/api/Nurse/:id", controller.GETNurse)
+
+			
+			protected.GET("/api/Drug", controller.ListDrug)
+			protected.GET("/api/DrugAllergy", controller.ListDrugAllergy)
+			protected.POST("/api/submit", controller.CreateDrugAllergy)
+			}
+		}
+	r.POST("/api/login", controller.Login)
 	// Run the server
 
 	r.Run()
