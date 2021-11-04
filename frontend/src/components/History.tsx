@@ -33,7 +33,7 @@ export default function History() {
     const [DrugAllergy, setDrugAllergy] = useState<DrugAllergyInterface[]>([]);
   
     const getDrugAllergy = async() => {
-      const apiUrl = "http://localhost:8080/api/DrugAllergy";
+      const apiUrl = "http://localhost:8080/api/ListDrugAllergy";
       const requestOptions = {
         method: "GET",
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}`,

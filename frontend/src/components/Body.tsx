@@ -49,11 +49,13 @@ export default function Body() {
     const classes = useStyles();
       useEffect(() => {
       getMedicalRecord();
-      getNurse();
+
       getDrug();
+
     }, []);
 
   const [DrugAllergy,setDrugAllergy] = useState<Partial<DrugAllergyInterface>>({});
+
 
   const  [AddedTime,setAddedTime] = useState<Date|null>(new Date());
   const handleAddedTime = (date: Date | null) => {
@@ -63,7 +65,7 @@ export default function Body() {
 
   const [MedicalRecord, setMedicalRecord] = useState<MedicalRecordInterface[]>([]);
   const getMedicalRecord = async() => {
-      const apiUrl = "http://localhost:8080/api/MedicalRecord";
+      const apiUrl = "http://localhost:8080/api/ListMedicalRecord";
       const requestOptions = {
         method: "GET",
         headers: {Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -81,39 +83,13 @@ export default function Body() {
           }
         });
     }
+    
 
-
-
-
-  const [Nurse, setNurse] = useState<NurseInterface>();
-  const getNurse = async() => {
-    const uid = Number(localStorage.getItem("uid"));
-    const apiUrl = `http://localhost:8080/api/Nurse/${uid}`;
-    const requestOptions = {
-        method: "GET",
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}`,
-              "Content-Type": "application/json",},
-      }
-  
-      fetch(apiUrl, requestOptions)
-        .then((response) => response.json())
-        .then((res) => {
-          console.log(res.data);
-          if(res.data) {
-            setNurse(res.data)
-          } else {
-            console.log("else")
-          }
-        });
-    }
-
-
-
-
+  const Nurse: NurseInterface = (JSON.parse(localStorage.getItem("Nurse")|| ""))
 
   const [Drug, setDrug] = useState<DrugInterface[]>([]);
   const getDrug = async() => {
-      const apiUrl = "http://localhost:8080/api/Drug";
+      const apiUrl = "http://localhost:8080/api/ListDrug";
       const requestOptions = {
         method: "GET",
         headers: {Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -136,6 +112,7 @@ export default function Body() {
 
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+
   const handleClose = (event?: SyntheticEvent, reason?: string) => {
     if (reason === "clickaway") {
       return;
@@ -156,7 +133,7 @@ export default function Body() {
     };
     
 
-    const apiUrl = "http://localhost:8080/api/submit";
+    const apiUrl = "http://localhost:8080/api/CreateDrugAllergy";
     const requestOptionsPost = {
       method: "POST",
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -187,7 +164,7 @@ export default function Body() {
 
 
 <Container className={classes.container} maxWidth="md">
-    <Snackbar open={success} autoHideDuration={5000} onClose={handleClose} TransitionProps={{onExit: () => {window.location.href="/";}}}>
+    <Snackbar open={success} autoHideDuration={800} onClose={handleClose} TransitionProps={{onExit: () => {window.location.href="/";}}}>
             <Alert onClose={handleClose} severity="success">
               บันทึกข้อมูลสำเร็จ
               
@@ -239,12 +216,10 @@ export default function Body() {
                         <Select variant="outlined"
                            disabled
                            defaultValue={0}
-                           value={Nurse?.ID}
                            style={{width:400}}
 
                            >
-                             <MenuItem value={0}>{Nurse?.Name}</MenuItem>
-
+                             <MenuItem value={0}>{Nurse.Name}</MenuItem>
                         </Select>
                     </Grid>      
 

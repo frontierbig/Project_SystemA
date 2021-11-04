@@ -43,7 +43,7 @@ function SignIn() {
   const [error, setError] = useState(false);
 
   const login = () => {
-    const apiUrl = "http://localhost:8080/api/login";
+    const apiUrl = "http://localhost:8080/api/LoginNurse";
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -55,7 +55,7 @@ function SignIn() {
         if (res.data) {
           setSuccess(true);
           localStorage.setItem("token", res.data.token);
-          localStorage.setItem("uid", res.data.id);
+          localStorage.setItem("Nurse", JSON.stringify(res.data.nurses));
           window.location.reload()
         } else {
           setError(true);

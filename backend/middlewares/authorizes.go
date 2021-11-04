@@ -3,7 +3,7 @@ package middlewares
 import (
 	"net/http"
 	"strings"
-	"github.com/frontierbig/sa-64-example/service"
+	"github.com/Project/service"
 	"github.com/gin-gonic/gin"
 )
 
