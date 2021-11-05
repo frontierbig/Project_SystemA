@@ -4,8 +4,6 @@ import (
 	"gorm.io/gorm"
 )
 
-
-
 type Disease struct {
 	gorm.Model
 
