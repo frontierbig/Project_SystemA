@@ -9,7 +9,6 @@ import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-
 import { SigninInterface } from "../models/ISignin";
 
 function Alert(props: AlertProps) {
@@ -121,7 +120,7 @@ function SignIn() {
             fullWidth
             name="Pass"
             label="Pass"
-            type="pass"
+            type="password"
             id="Pass"
             autoComplete="current-pass"
             value={signin.Pass || ""}

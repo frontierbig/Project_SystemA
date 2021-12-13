@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+//////6
 func ListDrug(c *gin.Context) {
 	var Drug []entity.Drug
 	if err := entity.DB().Table("drugs").Find(&Drug).Error; err != nil {

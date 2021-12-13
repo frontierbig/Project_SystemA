@@ -6,7 +6,6 @@ import (
 	"gorm.io/gorm"
 )
 
-//DrugAllergy
 type Drug struct {
 	gorm.Model
 	Drug_Name       string

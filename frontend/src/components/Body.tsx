@@ -49,20 +49,11 @@ export default function Body() {
     const classes = useStyles();
       useEffect(() => {
       getMedicalRecord();
-
       getDrug();
 
     }, []);
 
-  const [DrugAllergy,setDrugAllergy] = useState<Partial<DrugAllergyInterface>>({});
-
-
-  const  [AddedTime,setAddedTime] = useState<Date|null>(new Date());
-  const handleAddedTime = (date: Date | null) => {
-    setAddedTime(date);
-  }
-
-
+//5
   const [MedicalRecord, setMedicalRecord] = useState<MedicalRecordInterface[]>([]);
   const getMedicalRecord = async() => {
       const apiUrl = "http://localhost:8080/api/ListMedicalRecord";
@@ -107,9 +98,13 @@ export default function Body() {
           }
         });
     }
+    const [DrugAllergy,setDrugAllergy] = useState<Partial<DrugAllergyInterface>>({});
+    const  [AddedTime,setAddedTime] = useState<Date|null>(new Date());
+    const handleAddedTime = (date: Date | null) => {
+      setAddedTime(date);
+    }
 
-
-
+  const [warning,setWarning] = useState(false)
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
@@ -117,22 +112,28 @@ export default function Body() {
     if (reason === "clickaway") {
       return;
     }
-
     setSuccess(false);
     setError(false);
+    setWarning(false);
   };  
 
 
+//7
+
   const submitDrugAllergy = () => {
     let data = {
-	    NurseID: Nurse?.ID,
+	    NurseID: Nurse.ID,
       MedicalRecordID:   DrugAllergy.MedicalRecordID,
       DrugID:  DrugAllergy.DrugID,
       DrugAllergy: DrugAllergy.DrugAllergy,
 	    AddedTime:  AddedTime
+      
     };
-    
-
+    if(!DrugAllergy.DrugAllergy){
+      console.log("กรุณาใส่ข้อมูลให้ครบ หรือ ใส่ข้อมูลให้ถูกต้อง")
+      setWarning(true)
+      return
+    }
     const apiUrl = "http://localhost:8080/api/CreateDrugAllergy";
     const requestOptionsPost = {
       method: "POST",
@@ -162,6 +163,7 @@ export default function Body() {
 
     return (
 
+  
 
 <Container className={classes.container} maxWidth="md">
     <Snackbar open={success} autoHideDuration={800} onClose={handleClose} TransitionProps={{onExit: () => {window.location.href="/";}}}>
@@ -175,6 +177,15 @@ export default function Body() {
               บันทึกข้อมูลไม่สำเร็จ
             </Alert>
           </Snackbar>
+          
+          <Snackbar open={warning} autoHideDuration={4000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="warning">
+          กรุณากรอกข้อมูลให้ถูกต้อง
+        </Alert>
+        </Snackbar>
+          
+
+          {/* ********************************************************************************************************************/}
 
             <Paper className={classes.paper}>
                 <Box display="flex">
@@ -198,12 +209,14 @@ export default function Body() {
                 <Grid item xs={6}>
                         <p>ชื่อผู้ป่วย</p>
                         <Select variant="outlined"
+                            defaultValue={0}
                             value={DrugAllergy.MedicalRecordID}
                             inputProps={{name: "MedicalRecordID"}}
                             onChange={handleChange}
                             style={{ width: 400 }}
+                            
                         >
-                            <MenuItem value={0} key={0}>เลือกชื่อผู้ป่วย</MenuItem>
+                            <MenuItem value={0} key={0}disabled>เลือกชื่อผู้ป่วย</MenuItem>
                             {MedicalRecord.map((item: MedicalRecordInterface) => (
                               <MenuItem value={item.ID} key={item.ID}>{item.Patient_Name}</MenuItem>))}
                         </Select>
@@ -227,12 +240,13 @@ export default function Body() {
                     <Grid item xs={6}>
                         <p>ชื่อยา</p>
                         <Select variant="outlined"
+                            defaultValue={0}
                             value={DrugAllergy.DrugID}
                             inputProps={{name: "DrugID"}}
                             onChange={handleChange}
                             style={{ width: 400 }}
                         >
-                            <MenuItem value={0} key={0}>เลือกชื่อยา</MenuItem>
+                            <MenuItem value={0} key={0} disabled>เลือกชื่อยา </MenuItem>
                             {Drug.map((item: DrugInterface) => (
                               <MenuItem value={item.ID} key={item.ID}>{item.Drug_Name}</MenuItem>))}
                         </Select>
@@ -268,9 +282,8 @@ export default function Body() {
                         label="" 
                         variant="outlined" 
                         className ={classes.fullbox}
-                         multiline rows={4}/>
-                          
-
+                        multiline rows={4}/>
+                    
                     </Grid>
 
 

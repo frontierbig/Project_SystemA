@@ -20,7 +20,6 @@ function App() {
     return <SignIn />
   }
 
-
   return (
     <div>
       <Router>

@@ -9,10 +9,10 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// LoginNursePayload login body
+// LoginNursePayload login body 2
 type LoginNursePayload struct {
-	Email    string `json:"Email"`
-	Pass string `json:"Pass"`
+	Email string `json:"Email"`
+	Pass  string `json:"Pass"`
 }
 
 // LoginNurseResponse token response
@@ -21,7 +21,7 @@ type LoginNurseResponse struct {
 	Nurse entity.Nurse `json:"nurses"`
 }
 
-// POST /LoginNurse
+// POST /LoginNurse  3
 func LoginNurse(c *gin.Context) {
 	var payload LoginNursePayload
 	var Nurse entity.Nurse

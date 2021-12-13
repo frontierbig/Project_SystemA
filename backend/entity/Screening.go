@@ -21,7 +21,7 @@ type Screening struct {
 	MedRecID *uint
 	MedRec   MedicalRecord
 
-	DiseaseID *uint
+	DiseaseID *uint   
 	Disease   Disease
 
 	NurseID *uint

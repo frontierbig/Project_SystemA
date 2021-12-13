@@ -11,14 +11,14 @@ import (
 
 // LoginDoctorPayload login body
 type LoginDoctorPayload struct {
-	Email string `json:"email"`
-	Password  string `json:"pass"`
+	Email    string `json:"email"`
+	Password string `json:"pass"`
 }
 
 // LoginDoctorResponse token response
 type LoginDoctorResponse struct {
-	Token       string		`json:"token"`
-	Doctor entity.Doctor	`json:"doctor"`
+	Token  string        `json:"token"`
+	Doctor entity.Doctor `json:"doctor"`
 }
 
 // POST /LoginDoctor
@@ -61,7 +61,7 @@ func LoginDoctor(c *gin.Context) {
 	}
 
 	tokenResponse := LoginDoctorResponse{
-		Token:       signedToken,
+		Token:  signedToken,
 		Doctor: Doctor,
 	}
 
